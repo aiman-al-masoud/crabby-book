@@ -2,6 +2,13 @@
   "name": "crabby-book",
   "module": "index.ts",
   "type": "module",
+
+  "scripts": {
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
+  },
+
   "devDependencies": {
     "@edgedb/generate": "^0.5.4",
     "@types/bun": "latest"
@@ -10,6 +17,9 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "edgedb": "^1.5.8"
+    "@solidjs/start": "^1.0.6",
+    "edgedb": "^1.5.8",
+    "solid-js": "^1.8.19",
+    "vinxi": "^0.4.1"
   }
 }

@@ -97,7 +97,6 @@ export const handlePKCECallback = async (req: http.IncomingMessage, res: http.Se
     const code = requestUrl.searchParams.get("code");
     if (!code) {
         const error = requestUrl.searchParams.get("error");
-        // res.status = 400;
         res.statusCode = 400;
         res.end(
             `OAuth callback is missing 'code'. \
@@ -111,7 +110,6 @@ export const handlePKCECallback = async (req: http.IncomingMessage, res: http.Se
         ?.find(cookie => cookie.startsWith("edgedb-pkce-verifier="))
         ?.split("=")[1];
     if (!verifier) {
-        // res.status = 400;
         res.statusCode = 400;
         res.end(
             `Could not find 'verifier' in the cookie store. Is this the \
@@ -129,7 +127,6 @@ export const handlePKCECallback = async (req: http.IncomingMessage, res: http.Se
 
     if (!codeExchangeResponse.ok) {
         const text = await codeExchangeResponse.text();
-        // res.status = 400;
         res.statusCode = 400;
         res.end(`Error from the auth server: ${text}`);
         return;

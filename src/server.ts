@@ -1,5 +1,6 @@
 import http from "node:http";
 import * as auth from './handlers/auth';
+import { handleQuery } from "./handlers/handle-query";
 
 const { SERVER_PORT } = process.env;
 
@@ -24,9 +25,12 @@ const server = http.createServer(async (req, res) => {
         }
 
         default: {
-            res.writeHead(404);
-            res.end("Not found");
+
+            await handleQuery(req, res)
             break;
+            // res.writeHead(404);
+            // res.end("Not found");
+            // break;
         }
     }
 });
