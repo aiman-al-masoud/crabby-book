@@ -1,17 +1,22 @@
-# Marketplace
+# CrabbyBook
 
-A project to practice using EdgeDB, Solid JS and trpc.
+A project to practice using EdgeDB and Solid JS.
 
-## Model
+## Model & Features
 
-There are admins, products, customers and shopping carts.
+A basic stupid social network. 
 
-EdgeDB Features to try out:
-- polymorphism of products
-    - unit-buyable
-    - quantity-buyable
-
-- authentication (admin area and customer online shopping)
+- creatable (polymorphic)
+    - posts
+    - reactions (polymorphic)
+        - dislike
+        - angry face
+        - sad face
+        - comments
+- auto generated interfaces and TS functions from queries
+- authentication
+- global user
+- built in authentication UI
 
 # 
 
@@ -39,6 +44,7 @@ User should signup up from here: http://localhost:3000/auth/ui/signup
 npx @edgedb/generate interfaces
 npx @edgedb/generate queries --file
 
+https://docs.edgedb.com/guides/auth/built_in_ui
 
 edgedb database wipe # wipes away schema too!
 
