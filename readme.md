@@ -4,7 +4,9 @@ A project to practice using EdgeDB and Solid JS.
 
 ## Model & Features
 
-A basic stupid social network. 
+A stupid social network designed in such a way that if you like a post you must shut up about it.
+
+TODO: remove comments, because they allow expressing positive emotions.
 
 - creatable (polymorphic)
     - posts
@@ -56,3 +58,4 @@ https://github.com/t3dotgg/solid-trpc
 
 
 
+- https://solid-libs.github.io/solid-bootstrap/components/buttons
