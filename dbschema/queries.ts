@@ -38,6 +38,26 @@ insert Dislike{
 }
 
 
+export type CreateCommentArgs = {
+  readonly "text": string;
+  readonly "postId": string;
+};
+
+export type CreateCommentReturns = {
+  "id": string;
+};
+
+export function createComment(client: Executor, args: CreateCommentArgs): Promise<CreateCommentReturns> {
+  return client.queryRequiredSingle(`\
+insert Comment {
+    text := <str>$text,
+    author := global current_user,
+    post := assert_single((select Post filter <str>Post.id = <str>$postId)),
+}`, args);
+
+}
+
+
 export type CreatePostArgs = {
   readonly "text": string;
 };
@@ -94,28 +114,8 @@ select Post {
     dislikes := count((select Dislike filter Dislike.post = Post)),
     angry_faces := count((select AngryFace filter AngryFace.post = Post)),
 }
-order by .created_at
+order by .created_at desc
 offset <int32>$offset
 limit <int32>$limit`, args);
-
-}
-
-
-export type CreateCommentArgs = {
-  readonly "text": string;
-  readonly "postId": string;
-};
-
-export type CreateCommentReturns = {
-  "id": string;
-};
-
-export function createComment(client: Executor, args: CreateCommentArgs): Promise<CreateCommentReturns> {
-  return client.queryRequiredSingle(`\
-insert Comment {
-    text := <str>$text,
-    author := global current_user,
-    post := assert_single((select Post filter <str>Post.id = <str>$postId)),
-}`, args);
 
 }

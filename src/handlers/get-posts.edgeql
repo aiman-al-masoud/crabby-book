@@ -11,6 +11,6 @@ select Post {
     dislikes := count((select Dislike filter Dislike.post = Post)),
     angry_faces := count((select AngryFace filter AngryFace.post = Post)),
 }
-order by .created_at
+order by .created_at desc
 offset <int32>$offset
 limit <int32>$limit

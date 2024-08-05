@@ -1,18 +1,10 @@
 import { createSignal } from "solid-js";
 import "./scss/app.css";
-import type { GetPostsReturns } from "../dbschema/queries";
-import { Accordion, Button, ButtonGroup, Card, Container, Image, Row, Col, Form, CardHeader } from "solid-bootstrap";
+import type { CreateAngryFaceArgs, CreateDislikeArgs, CreatePostArgs, GetPostsReturns } from "../dbschema/queries";
+import { Button, ButtonGroup, Card, Container, Image, Row, Col, Form, CardHeader } from "solid-bootstrap";
+const { VITE_SERVER_PORT } = import.meta.env
 
-
-const initialPosts: GetPostsReturns = [
-  { text: 'Despite the negative press covfefe', dislikes: 0, id: '', author_details: { email: 'capra@gmail.com' }, created_at: new Date(), comments: [], angry_faces: 0 },
-  { text: 'MAKE AMERICA GREAT AGAIN!', dislikes: 0, id: '', author_details: { email: 'capra@gmail.com' }, created_at: new Date(), comments: [], angry_faces: 0 },
-  { text: 'The democrats!', dislikes: 0, id: '', author_details: { email: 'capra@gmail.com' }, created_at: new Date(), comments: [], angry_faces: 0 },
-  { text: 'BUILD THAT WALL', dislikes: 0, id: '', author_details: { email: 'capra@gmail.com' }, created_at: new Date(), comments: [], angry_faces: 0 },
-]
-
-const [posts, setPosts] = createSignal(initialPosts)
-
+const [posts, setPosts] = createSignal([] as GetPostsReturns)
 const [textNewRant, setTextNewRant] = createSignal('')
 
 function showPosts() {
@@ -34,12 +26,13 @@ function showPost(post: GetPostsReturns[0]) {
     </Card.Body>
 
     <ButtonGroup>
-      <Button>{post.dislikes} 👎</Button>
-      <Button>{post.angry_faces} 😠</Button>
+      <Button onClick={() => createDislike({ postId: post.id })}>{post.dislikes} 👎</Button>
+      <Button onClick={() => createAngryFace({ postId: post.id })}>{post.angry_faces} 😠</Button>
     </ButtonGroup>
 
     <Card.Footer>
-      {post.created_at?.toDateString()} {post.created_at?.getHours()}:{post.created_at?.getMinutes()}
+      {/* {post.created_at?.toDateString()} {post.created_at?.getHours()}:{post.created_at?.getMinutes()} */}
+      {post.created_at?.toString()}
     </Card.Footer>
 
   </Card>
@@ -60,7 +53,7 @@ function showEditor() {
       <Card.Body>
 
         <Form.Control as='textarea' value={textNewRant()} oninput={e => setTextNewRant(e.target.value)} rows={3} id="ciao" placeholder="Your rant goes here..." />
-        <Button onClick={createPost}>Post!</Button>
+        <Button onClick={() => createPost({ text: textNewRant() })}>Post!</Button>
 
       </Card.Body>
     </Card>
@@ -68,14 +61,18 @@ function showEditor() {
   </>
 }
 
-function createPost() {
+// function createPost() {
 
-  setPosts([ {text:textNewRant()},  ...posts()])
-}
+//   setPosts([{ text: textNewRant() }, ...posts()])
+// }
 
 
 
 export default function App() {
+
+  setInterval(() => {
+    getPosts()
+  }, 200)
 
   // const [count, setCount] = createSignal(0);
 
@@ -85,17 +82,17 @@ export default function App() {
     <Container>
 
       <Row>
-        
+
         <CardHeader>
 
           <h1>
             <span style={{
-              color:'orange', 
+              color: 'orange',
               "text-shadow": "2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000"
             }}>Crabby</span>
             <span
               style={{
-                color:'black',
+                color: 'black',
                 "text-shadow": "2px 0 #ffa500, -2px 0 #ffa500, 0 2px #ffa500, 0 -2px #ffa500, 1px 1px #ffa500, -1px -1px #ffa500, 1px -1px #ffa500, -1px 1px #ffa500"
               }}
             >Book</span>
@@ -109,7 +106,7 @@ export default function App() {
         {/* <h1>Crabby Book</h1> */}
         {/* <Card>Crabby Book</Card> */}
 
-        
+
       </Row>
       <Row>
 
@@ -122,5 +119,63 @@ export default function App() {
 
 
 }
+
+
+
+
+
+async function getPosts() {
+
+  const results = await fetch(`http://localhost:${VITE_SERVER_PORT}/api/v1/query/get-posts?limit=100&offset=0`)
+  const posts = await results.json() as GetPostsReturns
+  setPosts(posts)
+}
+
+async function createPost(post: CreatePostArgs) {
+
+  const response = await fetch(
+    `http://localhost:${VITE_SERVER_PORT}/api/v1/query/create-post`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(post),
+    },
+  )
+
+}
+
+async function createAngryFace(args: CreateAngryFaceArgs) {
+
+  const response = await fetch(
+    `http://localhost:${VITE_SERVER_PORT}/api/v1/query/create-angry-face`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(args),
+    },
+  )
+}
+
+async function createDislike(args: CreateDislikeArgs) {
+
+  const response = await fetch(
+    `http://localhost:${VITE_SERVER_PORT}/api/v1/query/create-dislike`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(args),
+    },
+  )
+}
+
 
 

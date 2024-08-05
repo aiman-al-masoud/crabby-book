@@ -2,37 +2,50 @@ import http from "node:http";
 import { URL } from "node:url";
 import * as queries from '../../dbschema/queries'
 import * as edgedb from "edgedb";
+// import { getAuthToken } from "./auth";
 
+export const handleQuery = async (req: http.IncomingMessage, res: http.ServerResponse, headers:{[key:string]:string|number}) => {
 
-export const handleQuery = async (req: http.IncomingMessage, res: http.ServerResponse) => {
-
-    const url = new URL(req.url!, 'http://localhost:3000')
-
+    const url = new URL(req.url!, 'http://somehost')
     const searchParams = cleanSearchParams(url.searchParams)
     const cookies = parseCookies(req.headers.cookie ?? '')
     const pathname = url.pathname
-    const funcname = camelize(pathname.slice(1))
-    const authToken = cookies['edgedb-auth-token']
+    const funcname = camelize(pathname.replace('/query/', ''))
     
-    console.log('searchParams=', searchParams)
-    console.log('cookies=', cookies)
-    console.log('pathname=', pathname)
-    console.log('funcname=', funcname)
-    console.log()
+    const authToken = cookies['edgedb-auth-token']
+    // const authToken = await getAuthToken(req)
+    
+    const json = await getJson(req)
+    // @ts-ignore
+    const func = queries[funcname]
+    
+    // console.log('authToken=', authToken)
+    // console.log('searchParams=', searchParams)
+    // console.log('cookies=', cookies)
+    // console.log('pathname=', pathname)
+    // console.log('funcname=', funcname)
+    // console.log('json=', json)
+    
+    if (func === undefined){
+
+        res.writeHead(400, `Query ${funcname} is not supported.`, headers)
+        res.end()
+        return
+    }
 
     const client = edgedb.createClient().withGlobals({
         "ext::auth::client_token": authToken,
     });
 
-    // @ts-ignore
-    const func = queries[funcname]
-    const result = await func(client, searchParams)
-
-    console.log(result)
-
-    res.statusCode = 200
-    res.end()
-
+    try{
+        const results = await func(client, {...json, ...searchParams})
+        res.writeHead(200, 'ok')
+        res.end(JSON.stringify(results))
+    }catch(e){
+        console.log(e)
+        res.writeHead(500, `${e}`)
+        res.end()
+    }
 }
 
 
@@ -53,3 +66,26 @@ function cleanSearchParams(sp:URLSearchParams){
 }
 
 
+
+async function getJson(req: http.IncomingMessage):Promise<object>{
+
+    return new Promise((resolve, reject)=>{
+    
+        let buffer = ''
+    
+        req.on('data', chunk=>{
+            buffer+=chunk
+        }).on('end', ()=>{
+
+            try{
+                const object = JSON.parse(buffer)
+                resolve(object)
+            }catch{
+                // reject(`invalid json format "${buffer}"`)
+                resolve({})
+            }
+
+        })
+
+    })
+}

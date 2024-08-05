@@ -39,9 +39,10 @@ providers > add providers > local > email+password
 require_verification=false to skip email verification setup
 install and test mailpit
 https://mailpit.axllent.org
-http://localhost:10701/db/main/ext/auth/ui/signin
-http://localhost:10701/db/main/ext/auth/ui/signup
+http://localhost:10702/db/main/ext/auth/ui/signin
+http://localhost:10702/db/main/ext/auth/ui/signup
 User should signup up from here: http://localhost:3000/auth/ui/signup
+ http://localhost:3000/auth/ui/signin
 
 npx @edgedb/generate interfaces
 npx @edgedb/generate queries --file
@@ -61,4 +62,4 @@ https://github.com/t3dotgg/solid-trpc
 - https://solid-libs.github.io/solid-bootstrap/components/buttons
 
 
-sudo apt install ruby-sass
+https://stackoverflow.com/questions/44405448/how-to-allow-cors-with-node-js-without-using-express

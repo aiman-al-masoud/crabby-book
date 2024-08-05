@@ -53,14 +53,15 @@ export const getRequestUrl = (req: http.IncomingMessage) => {
  * PKCE challenge, and saves PKCE verifier in an HttpOnly cookie.
  */
 export const handleUiSignIn = async (req: http.IncomingMessage, res: http.ServerResponse) => {
+    
     const { verifier, challenge } = generatePKCE();
 
     const redirectUrl = new URL("ui/signin", EDGEDB_AUTH_BASE_URL);
     redirectUrl.searchParams.set("challenge", challenge);
-
+ 
     res.writeHead(301, {
-        "Set-Cookie": `edgedb-pkce-verifier=${verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
-        Location: redirectUrl.href,
+       "Set-Cookie": `edgedb-pkce-verifier=${verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+       Location: redirectUrl.href,
     });
     res.end();
 };
@@ -90,7 +91,9 @@ export const handleUiSignUp = async (req: http.IncomingMessage, res: http.Server
 * @param {Request} req
 * @param {Response} res
 */
-export const handlePKCECallback = async (req: http.IncomingMessage, res: http.ServerResponse) => {
+export const handlePKCECallback = async (req: http.IncomingMessage, res: http.ServerResponse, headers:{[key:string]:string|number}) => {
+
+    console.log('handlePKCECallback')
 
     const requestUrl = getRequestUrl(req);
 
@@ -105,6 +108,8 @@ export const handlePKCECallback = async (req: http.IncomingMessage, res: http.Se
         return;
     }
 
+    console.log('code=', code)
+
     const cookies = req.headers.cookie?.split("; ");
     const verifier = cookies
         ?.find(cookie => cookie.startsWith("edgedb-pkce-verifier="))
@@ -118,12 +123,17 @@ export const handlePKCECallback = async (req: http.IncomingMessage, res: http.Se
         return;
     }
 
+    console.log('cookies=', cookies)
+
     const codeExchangeUrl = new URL("token", EDGEDB_AUTH_BASE_URL);
     codeExchangeUrl.searchParams.set("code", code);
     codeExchangeUrl.searchParams.set("verifier", verifier);
     const codeExchangeResponse = await fetch(codeExchangeUrl.href, {
         method: "GET",
     });
+
+
+    console.log('codeExchangeResponse=', codeExchangeResponse)
 
     if (!codeExchangeResponse.ok) {
         const text = await codeExchangeResponse.text();
@@ -134,9 +144,50 @@ export const handlePKCECallback = async (req: http.IncomingMessage, res: http.Se
 
     const { auth_token } = await codeExchangeResponse.json();
 
-    res.writeHead(204, {
-        "Set-Cookie": `edgedb-auth-token=${auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`,
-    });
+    // res.writeHead(204, {
+    //     "Set-Cookie": `edgedb-auth-token=${auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+    // });
+
+    const redirectUrl = 'http://localhost:3000/'
+
+    res.writeHead(301, {
+        ...headers,
+        // "Set-Cookie": `edgedb-auth-token=${auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+        "Set-Cookie": `edgedb-auth-token=${auth_token}; HttpOnly; Path=/;`,
+        Location: redirectUrl,
+    })
 
     res.end();
 };
+
+
+// export const getAuthToken = async (req: http.IncomingMessage) => {
+
+//     const requestUrl = getRequestUrl(req);
+
+//     const code = requestUrl.searchParams.get("code");
+
+//     console.log('code=', code)
+//     if (!code) {
+//         return undefined
+//     }
+
+//     const cookies = req.headers.cookie?.split("; ");
+//     const verifier = cookies
+//         ?.find(cookie => cookie.startsWith("edgedb-pkce-verifier="))
+//         ?.split("=")[1];
+//     if (!verifier) {
+//         return undefined
+//     }
+
+//     const codeExchangeUrl = new URL("token", EDGEDB_AUTH_BASE_URL);
+//     codeExchangeUrl.searchParams.set("code", code);
+//     codeExchangeUrl.searchParams.set("verifier", verifier);
+//     const codeExchangeResponse = await fetch(codeExchangeUrl.href, {
+//         method: "GET",
+//     });
+
+//     const { auth_token } = await codeExchangeResponse.json();
+
+//     return auth_token
+// }
