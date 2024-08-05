@@ -59,3 +59,6 @@ https://github.com/t3dotgg/solid-trpc
 
 
 - https://solid-libs.github.io/solid-bootstrap/components/buttons
+
+
+sudo apt install ruby-sass

@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import "./app.css";
+import "./scss/app.css";
 import type { GetPostsReturns } from "../dbschema/queries";
 import { Accordion, Button, ButtonGroup, Card, Container, Image, Row, Col, Form, CardHeader } from "solid-bootstrap";
 

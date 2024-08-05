@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start"
+    "start": "vinxi start",
+    "css": "bun run src/scss/compile-sass.ts styles.scss > src/scss/app.css",
+    "be": "bun run src/server.ts"
   },
   "devDependencies": {
     "@edgedb/generate": "^0.5.4",
@@ -16,7 +18,9 @@
   },
   "dependencies": {
     "@solidjs/start": "^1.0.6",
+    "bootstrap": "^5.3.3",
     "edgedb": "^1.5.8",
+    "sass": "^1.77.8",
     "solid-bootstrap": "^1.0.20",
     "solid-js": "^1.8.19",
     "vinxi": "^0.4.1"
