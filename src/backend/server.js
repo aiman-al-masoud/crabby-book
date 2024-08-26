@@ -70,6 +70,15 @@ const server = http.createServer(async (req, res) => {
             break;
         }
 
+
+        case requestUrl.pathname === "/auth/builtin/res/favicon.ico": {
+         
+            const x = readFileSync(`src/frontend/images/favicon.ico`)
+            res.writeHead(200, {'Content-Type': 'image/ico'})
+            res.end(x)
+            break
+        }
+
         case requestUrl.pathname.startsWith("/_build/assets/"): {
 
             const filename = requestUrl.pathname.replace('/_build/assets/', '')

@@ -7,5 +7,5 @@ export default defineConfig({
     server: {
         baseURL: "/", // for corret relative urls in built index.html file
         preset: "static",
-    }
+    },
 });
