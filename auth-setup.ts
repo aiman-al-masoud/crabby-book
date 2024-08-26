@@ -1,5 +1,9 @@
+/**
+ * This code was taken from here: https://github.com/edgedb/nextjs-edgedb-auth-template/blob/main/auth-setup.ts.
+ * By running it you get a nice wizard that helps you set up / modify EdgeDB's auth configuration.
+ * Alternatively, you can do this from EdgeDB's web UI, in the "Auth" section.
+ */
 
-// https://github.com/edgedb/nextjs-edgedb-auth-template/blob/main/auth-setup.ts
 import process from "node:process";
 import crypto from "node:crypto";
 import { createClient } from "edgedb";

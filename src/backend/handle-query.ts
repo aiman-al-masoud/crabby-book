@@ -57,7 +57,7 @@ function cleanSearchParams(sp: URLSearchParams) {
     return Object.fromEntries(cleanEntries)
 }
 
-async function getJson(req: http.IncomingMessage): Promise<object> {
+async function getJson(req: http.IncomingMessage, dflt = {}): Promise<object> {
 
     return new Promise((resolve, reject) => {
 
@@ -71,7 +71,7 @@ async function getJson(req: http.IncomingMessage): Promise<object> {
                 const object = JSON.parse(buffer)
                 resolve(object)
             } catch {
-                resolve({})
+                resolve(dflt)
             }
 
         })

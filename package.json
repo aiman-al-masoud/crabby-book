@@ -8,7 +8,7 @@
     "gen": "npx @edgedb/generate interfaces; npx @edgedb/generate queries --file;",
     "serve": "bun run src/backend/server.js",
     "dev": "vinxi dev",
-    "build": "vinxi build; cp -r src/frontend/images/* .output/public/_build/assets/",
+    "build": "vinxi build",
     "start": "vinxi start"
   },
   "devDependencies": {

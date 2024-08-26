@@ -1,4 +1,6 @@
-// https://docs.edgedb.com/guides/auth/built_in_ui
+/**
+ * This code (slightly modified) was taken from here: https://docs.edgedb.com/guides/auth/built_in_ui
+ */
 
 import http from "node:http";
 import { URL } from "node:url";
@@ -70,11 +72,10 @@ const server = http.createServer(async (req, res) => {
             break;
         }
 
-
         case requestUrl.pathname === "/auth/builtin/res/favicon.ico": {
-         
+
             const x = readFileSync(`src/frontend/images/favicon.ico`)
-            res.writeHead(200, {'Content-Type': 'image/ico'})
+            res.writeHead(200, { 'Content-Type': 'image/ico' })
             res.end(x)
             break
         }
@@ -90,9 +91,7 @@ const server = http.createServer(async (req, res) => {
 
             res.write(x)
             res.end()
-
             break
-
         }
 
         case requestUrl.pathname.startsWith('/query'):
