@@ -25,7 +25,11 @@ EdgeDB and EdgeQL (EdgeDB's query language) have so many nice features that it w
 
 ## Solid JS
 
-It's a React-like frontend framework based on signals and supporting TSX syntax. It is a little more intuitive to use than React (at least in my opinion). I used Bootstrap and SCSS for styling.
+It's a reactive frontend framework based on signals and supporting TSX syntax. It was released in 2020 (~ 7 years after React). Unlike React, Solid does not use a virtual DOM: it compiles down to plain javascript, allowing for faster performance.
+
+From a DX point of view, Solid is a little more intuitive to use than React (at least in my opinion). 
+
+For the styling, I used Bootstrap and SCSS.
 
 ## Future Improvements
 
@@ -71,4 +75,3 @@ edgedb database wipe
 - https://docs.edgedb.com/guides/auth/built_in_ui
 - https://www.edgedb.com/showcase/data-modeling
 - https://solid-libs.github.io/solid-bootstrap/components/buttons
-
