@@ -1,6 +1,6 @@
 # Crabby Book
 
-A "social" networking service where the only reaction you can have to other people's posts is critical: _if you like something, shut up about it_.
+_Asocial_ networking service where the only kind of reaction you can have to other people's posts is critical: _if you like something, then shut up about it_.
 
 <img src="src/frontend/images/favicon.ico" />
 
@@ -18,7 +18,7 @@ EdgeDB and EdgeQL (EdgeDB's query language) have so many nice features that it w
 - composable hierarchical queries.
 - auto-generated TS interfaces from EdgeQL schema.
 - auto-generated, parametrized TS functions from EdgeQL queries.
-- built-in authentication.
+- built-in authentication (I used the local email+password auth provider).
 - built in authentication UI.
 - global user.
 - access policies.
@@ -26,6 +26,12 @@ EdgeDB and EdgeQL (EdgeDB's query language) have so many nice features that it w
 ## Solid JS
 
 It's a React-like frontend framework based on signals and supporting TSX syntax. It is a little more intuitive to use than React (at least in my opinion).
+
+## Future Improvements
+
+- Add websockets for faster real-time updates.
+- Improve the way static resources are served.
+- Improve authentication handling.
 
 ## EdgeDB useful commands
 
@@ -66,14 +72,3 @@ edgedb database wipe
 - https://www.edgedb.com/showcase/data-modeling
 - https://solid-libs.github.io/solid-bootstrap/components/buttons
 
-
-# 
-
-<!-- open up edgedb ui to manage auth (auth panel)
-set auth signing key
-providers > add providers > local > email+password
-require_verification=false to skip email verification setup
-install and test mailpit
-https://mailpit.axllent.org
-User should signup up from here: http://localhost:3000/auth/ui/signup
- http://localhost:3000/auth/ui/signin -->
