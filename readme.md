@@ -25,7 +25,7 @@ EdgeDB and EdgeQL (EdgeDB's query language) have so many nice features that it w
 
 ## Solid JS
 
-It's a React-like frontend framework based on signals and supporting TSX syntax. It is a little more intuitive to use than React (at least in my opinion).
+It's a React-like frontend framework based on signals and supporting TSX syntax. It is a little more intuitive to use than React (at least in my opinion). I used Bootstrap and SCSS for styling.
 
 ## Future Improvements
 
