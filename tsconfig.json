@@ -31,10 +31,6 @@
     "types": ["vinxi/types/client"],
     "isolatedModules": true,
 
-    "paths": {
-      "~/*": ["./src/*"]
-    }
-
   }
 }
 

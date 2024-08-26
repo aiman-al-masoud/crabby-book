@@ -1,17 +1,19 @@
 {
-  "name": "crabby-book",
+  "name": "crabby-book-2",
   "module": "index.ts",
   "type": "module",
   "scripts": {
+    "setup-auth": "bun run auth-setup.ts",
+    "migrate": "edgedb migration create; edgedb migration apply;",
+    "gen": "npx @edgedb/generate interfaces; npx @edgedb/generate queries --file;",
+    "serve": "bun run src/backend/server.js",
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start",
-    "css": "bun run src/scss/compile-sass.ts styles.scss > src/scss/app.css",
-    "be": "bun run src/server.ts"
+    "start": "vinxi start"
   },
   "devDependencies": {
-    "@edgedb/generate": "^0.5.4",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@edgedb/generate": "^0.5.4"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -20,9 +22,10 @@
     "@solidjs/start": "^1.0.6",
     "bootstrap": "^5.3.3",
     "edgedb": "^1.5.8",
+    "inquirer": "^10.1.8",
     "sass": "^1.77.8",
     "solid-bootstrap": "^1.0.20",
-    "solid-js": "^1.8.19",
+    "solid-js": "^1.8.21",
     "vinxi": "^0.4.1"
   }
 }
