@@ -2,6 +2,8 @@
 
 A "social" networking service where the only reaction you can have to other people's posts is critical: _if you like something, shut up about it_.
 
+<img src="src/frontend/images/favicon.ico" />
+
 ## Why
 
 This project is just meant to practice using [EdgeDB](https://www.edgedb.com/) and [Solid JS](https://www.solidjs.com/).
