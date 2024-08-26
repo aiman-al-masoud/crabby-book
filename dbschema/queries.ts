@@ -20,19 +20,19 @@ insert AngryFace{
 }
 
 
-export type CreateDislikeArgs = {
-  readonly "postId": string;
+export type CreatePostArgs = {
+  readonly "text": string;
 };
 
-export type CreateDislikeReturns = {
+export type CreatePostReturns = {
   "id": string;
 };
 
-export function createDislike(client: Executor, args: CreateDislikeArgs): Promise<CreateDislikeReturns> {
+export function createPost(client: Executor, args: CreatePostArgs): Promise<CreatePostReturns> {
   return client.queryRequiredSingle(`\
-insert Dislike{
+insert Post {
+    text := <str>$text,
     author := global current_user,
-    post := assert_single((select Post filter <str>Post.id = <str>$postId)),
 }`, args);
 
 }
@@ -103,19 +103,19 @@ insert Comment {
 }
 
 
-export type CreatePostArgs = {
-  readonly "text": string;
+export type CreateDislikeArgs = {
+  readonly "postId": string;
 };
 
-export type CreatePostReturns = {
+export type CreateDislikeReturns = {
   "id": string;
 };
 
-export function createPost(client: Executor, args: CreatePostArgs): Promise<CreatePostReturns> {
+export function createDislike(client: Executor, args: CreateDislikeArgs): Promise<CreateDislikeReturns> {
   return client.queryRequiredSingle(`\
-insert Post {
-    text := <str>$text,
+insert Dislike{
     author := global current_user,
+    post := assert_single((select Post filter <str>Post.id = <str>$postId)),
 }`, args);
 
 }
